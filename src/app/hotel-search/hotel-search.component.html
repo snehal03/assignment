@@ -1,0 +1,88 @@
+<div class="container">
+    <form name="searchForm" #searchForm="ngForm">
+        <div class="row">
+            <h4>Search Form Page</h4>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="text-label">
+                    where
+                </div>
+                <div class="text-input">
+                    <input type="text" class="form-control" [(ngModel)]="location" name="loc" required/>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-label">
+                    Check-in
+                </div>
+                <div class="text-input">
+                    <input type="date" class="form-control" [(ngModel)]="searchModel.stayPeriod.start" name="start"
+                        required  />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-label">
+                    Check-out
+                </div>
+                <div class="text-input">
+                    <input type="date" class="form-control" [(ngModel)]="searchModel.stayPeriod.end" name="end"
+                        required  />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-label">
+                    Guest
+                </div>
+                <div class="text-input">
+                    <input type="number" class="form-control" [(ngModel)]="guest" name="guest" required  />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" [disabled]="!searchForm.valid" (click)="searchHotels()" class="btn btn-warning show-rooms">
+                    Search For Hotels
+                </button>
+            </div>
+        </div>
+    </form>
+    <br><hr>
+
+    <div *ngIf="submitClicked">
+        <h4>Please Wait response will take some time.....</h4>
+    </div>
+    <div *ngIf="hotelsData != undefined && hotelsData!=null">
+        <h5>
+            {{ hotelsData.paging.totalRecords }} hotels in {{ location }} on
+            {{ searchModel.stayPeriod.start }} - {{ searchModel.stayPeriod.end }} for
+            {{ guest }} adult(s)
+        </h5>
+        <hr />
+        <div *ngFor="let hotel of hotelsData.hotels">
+            <div class="row">
+                <div class="col-md-3">
+                    <img class="image-show" [src]="hotel.images[0].url" />
+                </div>
+                <div class="col-md-5">
+                    <span *ngFor="let rate of hotel.ratingData" class="rating">
+                        *
+                    </span>
+                    <div>{{ hotel.name }}</div>
+                </div>
+                <div class="col-md-4">
+                    <div>from</div>
+
+                    <h5 class="rate">${{ hotel.fare.baseFare }}</h5>
+                    / night
+
+                    <div>Total: ${{ hotel.fare.totalFare }}</div>
+                    <button class="btn btn-warning show-rooms ">Show Rooms</button>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
